@@ -8,14 +8,13 @@ from app.config import settings
 
 router = APIRouter(
     prefix=settings.api.v1.prefix,
+    tags=["pages"]
 )
 
 router.include_router(
     router,
     prefix=settings.api.v1.page,
 )
-
-router = APIRouter(tags=["Pages"])
 
 @router.post("/notion/pages")
 def create_page(page: PageCreate):
