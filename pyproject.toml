@@ -21,6 +21,7 @@ bcrypt = "^4.2.0"
 notion-client = "^2.2.1"
 aiosqlite = "^0.20.0"
 greenlet = "^3.1.1"
+black = "^24.10.0"
 
 [tool.poetry.group.dev.dependencies]
 alembic = "^1.13.3"
