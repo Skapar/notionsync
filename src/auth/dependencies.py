@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload
 
-from app.db import get_sync_db
-from app.models import User
+from app.db.db import get_sync_db
+from app.models.models import User
 from .utils import decode_access_token
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
