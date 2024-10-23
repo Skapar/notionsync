@@ -5,8 +5,8 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
 
-from app.db import get_async_db
-from app.models import User
+from ..app.db import get_async_db
+from .models import User
 
 from .dependencies import get_current_user
 from .schemas import Token
@@ -18,7 +18,7 @@ from .utils import (
     create_refresh_token,
 )
 
-from app.config import settings
+from ..app.config import settings
 
 router = APIRouter()
 

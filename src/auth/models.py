@@ -2,7 +2,7 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import MetaData
 
-from app.models import Base
+from ..app.models import Base
 
 
 class User(Base):

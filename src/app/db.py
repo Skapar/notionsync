@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from app.config import settings
+from ..app.config import settings
 
 async_engine = create_async_engine(
     settings.db.url.replace("sqlite://", "sqlite+aiosqlite://"), echo=settings.db.echo
