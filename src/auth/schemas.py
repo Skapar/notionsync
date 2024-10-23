@@ -9,6 +9,7 @@ class UserCreate(BaseModel):
 class User(BaseModel):
     id: int
 
+
 class Token(BaseModel):
     access_token: str
     token_type: str

@@ -10,7 +10,13 @@ from app.models import User
 
 from .dependencies import get_current_user
 from .schemas import Token
-from .utils import create_access_token, get_password_hash, verify_password, decode_refresh_token, create_refresh_token
+from .utils import (
+    create_access_token,
+    get_password_hash,
+    verify_password,
+    decode_refresh_token,
+    create_refresh_token,
+)
 
 from app.config import settings
 
@@ -21,9 +27,11 @@ router.include_router(
     prefix=settings.api.v1.auth,
 )
 
+
 class UserCredentials(BaseModel):
     username: str
     password: str
+
 
 class TokenResponse(BaseModel):
     access_token: str
@@ -32,11 +40,14 @@ class TokenResponse(BaseModel):
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_async_db)):
+async def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_async_db),
+):
     query = select(User).where(User.username == form_data.username)
     result = await db.execute(query)
     user = result.scalars().first()
-    
+
     if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -45,17 +56,18 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
         )
 
     access_token = create_access_token(data={"sub": user.username})
-    
+
     refresh_token = create_refresh_token(data={"sub": user.username})
-    
+
     return TokenResponse(
-        access_token=access_token,
-        refresh_token=refresh_token,
-        token_type="bearer"
+        access_token=access_token, refresh_token=refresh_token, token_type="bearer"
     )
 
+
 @router.post("/register", response_model=TokenResponse)
-async def register_user(credentials: UserCredentials = Body(...), db: Session = Depends(get_async_db)):
+async def register_user(
+    credentials: UserCredentials = Body(...), db: Session = Depends(get_async_db)
+):
     query = select(User).where(User.username == credentials.username)
     result = await db.execute(query)
     user = result.scalars().first()
@@ -73,16 +85,16 @@ async def register_user(credentials: UserCredentials = Body(...), db: Session = 
 
     access_token = create_access_token(data={"sub": new_user.username})
     refresh_token = create_refresh_token(data={"sub": new_user.username})
-    
-    
+
     return TokenResponse(
-        access_token=access_token,
-        refresh_token=refresh_token,
-        token_type="bearer"
+        access_token=access_token, refresh_token=refresh_token, token_type="bearer"
     )
 
+
 @router.post("/refresh-token", response_model=Token)
-def get_access_token(refresh_token: str = Body(...), db: Session = Depends(get_async_db)):
+def get_access_token(
+    refresh_token: str = Body(...), db: Session = Depends(get_async_db)
+):
     username = decode_refresh_token(refresh_token)
     if not username:
         raise HTTPException(
@@ -90,21 +102,20 @@ def get_access_token(refresh_token: str = Body(...), db: Session = Depends(get_a
             detail="Invalid refresh token",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
     query = select(User).where(User.username == username)
     result = db.execute(query)
     user = result.scalars().first()
-    
+
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="User not found",
-    )
-    
+        )
+
     access_token = create_access_token(data={"sub": user.username})
 
     return {"access_token": access_token, "token_type": "bearer"}
-
 
 
 @router.get("/me")

@@ -7,5 +7,5 @@ class Base(DeclarativeBase):
     __abstract__ = True
 
     metadata = MetaData()
-    
+
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

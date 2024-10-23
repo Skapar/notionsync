@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class ApiV1Prefix(BaseModel):
     prefix: str = "/v1"
     auth: str = "/auth"
@@ -48,7 +49,6 @@ class Settings(BaseSettings):
         case_sensitive=False,
         extra="allow",
     )
-
 
 
 settings = Settings()
