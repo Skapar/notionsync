@@ -5,8 +5,8 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
 
-from app.db.db import get_sync_db
-from app.models.models import User
+from app.db import get_async_db
+from app.models import User
 
 from .dependencies import get_current_user
 from .schemas import Token
@@ -26,9 +26,9 @@ class TokenResponse(BaseModel):
 
 
 @router.post("/login", response_model=TokenResponse)
-def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_sync_db)):
+async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_async_db)):
     query = select(User).where(User.username == form_data.username)
-    result = db.execute(query)
+    result = await db.execute(query)
     user = result.scalars().first()
     
     if not user or not verify_password(form_data.password, user.hashed_password):
@@ -49,9 +49,9 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     )
 
 @router.post("/register", response_model=TokenResponse)
-def register_user(credentials: UserCredentials = Body(...), db: Session = Depends(get_sync_db)):
+async def register_user(credentials: UserCredentials = Body(...), db: Session = Depends(get_async_db)):
     query = select(User).where(User.username == credentials.username)
-    result = db.execute(query)
+    result = await db.execute(query)
     user = result.scalars().first()
 
     if user:
@@ -63,7 +63,7 @@ def register_user(credentials: UserCredentials = Body(...), db: Session = Depend
     hashed_password = get_password_hash(credentials.password)
     new_user = User(username=credentials.username, hashed_password=hashed_password)
     db.add(new_user)
-    db.commit()
+    await db.commit()
 
     access_token = create_access_token(data={"sub": new_user.username})
     refresh_token = create_refresh_token(data={"sub": new_user.username})
@@ -76,7 +76,7 @@ def register_user(credentials: UserCredentials = Body(...), db: Session = Depend
     )
 
 @router.post("/refresh-token", response_model=Token)
-def get_access_token(refresh_token: str = Body(...), db: Session = Depends(get_sync_db)):
+def get_access_token(refresh_token: str = Body(...), db: Session = Depends(get_async_db)):
     username = decode_refresh_token(refresh_token)
     if not username:
         raise HTTPException(

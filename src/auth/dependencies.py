@@ -2,16 +2,15 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
-from sqlalchemy.orm import joinedload
 
-from app.db.db import get_sync_db
-from app.models.models import User
+from app.db import get_async_db
+from app.models import User
 from .utils import decode_access_token
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_sync_db)):
+async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_async_db)):
     username = decode_access_token(token)
     if username is None:
         raise HTTPException(
@@ -21,7 +20,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         )
     
     query = select(User).where(User.username == username)
-    result = db.execute(query)
+    result = await db.execute(query)
     user = result.scalars().first()
 
     if user is None:

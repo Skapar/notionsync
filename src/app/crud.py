@@ -1,5 +1,5 @@
 from notion_client import Client
-from app.config.config import settings
+from app.config import settings
 import os
 
 notion = Client(auth=settings.API_KEY)
