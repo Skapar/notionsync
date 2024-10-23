@@ -20,7 +20,7 @@ class DatabaseConfig(BaseModel):
 
 class JWTConfig(BaseModel):
     secret_key: str = Field(..., description="JWT secret key")
-    algorithm: str = "HS256"
+    algorithm: str = Field(..., description="JWT hashing algorithm")
     access_token_expire_minutes: int = 30
     refresh_token_expire_days: int = 5
 
