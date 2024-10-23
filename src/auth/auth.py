@@ -12,8 +12,14 @@ from .dependencies import get_current_user
 from .schemas import Token
 from .utils import create_access_token, get_password_hash, verify_password, decode_refresh_token, create_refresh_token
 
+from app.config import settings
+
 router = APIRouter()
 
+router.include_router(
+    router,
+    prefix=settings.api.v1.auth,
+)
 
 class UserCredentials(BaseModel):
     username: str

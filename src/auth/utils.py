@@ -8,10 +8,10 @@ from app.config import settings
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-SECRET_KEY = settings.secret_key
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-REFRESH_TOKEN_EXPIRE_DAYS = 3
+SECRET_KEY = settings.jwt.secret_key
+ALGORITHM = settings.jwt.algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.jwt.access_token_expire_minutes
+REFRESH_TOKEN_EXPIRE_DAYS = settings.jwt.refresh_token_expire_days
 
 
 def verify_password(plain_password, hashed_password):
