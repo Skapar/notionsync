@@ -11,7 +11,7 @@ from .utils import decode_access_token
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_sync_db)):
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_sync_db)):
     username = decode_access_token(token)
     if username is None:
         raise HTTPException(
