@@ -16,6 +16,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-
-print(settings.secret_key)
-print(settings.url)

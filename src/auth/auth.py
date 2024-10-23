@@ -27,7 +27,6 @@ class TokenResponse(BaseModel):
 
 @router.post("/login", response_model=TokenResponse)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_sync_db)):
-    print(1)
     query = select(User).where(User.username == form_data.username)
     result = db.execute(query)
     user = result.scalars().first()
@@ -41,11 +40,8 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 
     access_token = create_access_token(data={"sub": user.username})
     
-    print(2)
-    
     refresh_token = create_refresh_token(data={"sub": user.username})
     
-    print(refresh_token)
     return TokenResponse(
         access_token=access_token,
         refresh_token=refresh_token,
