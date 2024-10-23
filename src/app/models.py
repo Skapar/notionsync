@@ -9,10 +9,3 @@ class Base(DeclarativeBase):
     metadata = MetaData()
     
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-
-
-class User(Base):
-    __tablename__ = "users"
-    
-    username = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
