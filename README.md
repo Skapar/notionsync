@@ -32,26 +32,40 @@ The database is managed using SQLite via SQLAlchemy, and the integration with No
 
 ```bash
 .
-├── app
-│   ├── __init__.py
-│   ├── main.py                # FastAPI entry point
-│   ├── auth                   # Handles user registration, login, and security
+## Project Structure
+
+```bash
+.
+├── src
+│   ├── app
+│   │   ├── config.py
+│   │   ├── crud.py
+│   │   ├── db.py
+│   │   ├── middleware.py
+│   │   ├── models.py
+│   │   ├── routes.py
+│   │   ├── schemas.py
+│   ├── auth
 │   │   ├── __init__.py
-│   │   ├── models.py           # SQLAlchemy models for user authentication
-│   │   ├── routes.py           # Routes for registration and login
-│   │   ├── security.py         # JWT and OAuth2.0 logic
-│   │   ├── schemas.py          # Pydantic schemas for user inputs
-│   ├── notion                 # Handles Notion API integration
-│   │   ├── __init__.py
-│   │   ├── client.py           # Initializes Notion client
-│   │   ├── routes.py           # CRUD routes for page management
-│   │   ├── schemas.py          # Pydantic models for Notion data
-│   ├── config.py               # App configuration settings
-│   └── db.py                   # Database connection and session management
-├── alembic                     # Database migrations
-├── .env                        # Environment variables
+│   │   ├── auth.py
+│   │   ├── dependencies.py
+│   │   ├── models.py
+│   │   ├── schemas.py
+│   │   ├── utils.py
+│   ├── migrations
+│   │   ├── versions
+│   │   ├── README
+│   │   ├── env.py
+│   │   ├── script.py.mako
+│   ├── alembic.ini
+│   ├── main.py
+├── env.template
+├── .gitignore
+├── Dockerfile
 ├── README.md
-└── requirements.txt            # Project dependencies
+├── database.db
+├── docker-compose.yml
+├── requirements.txt
 ```
 
 ## Installation
