@@ -32,8 +32,6 @@ The database is managed using SQLite via SQLAlchemy, and the integration with No
 
 ```bash
 .
-```bash
-.
 ├── src
 │   ├── app
 │   │   ├── config.py
