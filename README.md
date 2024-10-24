@@ -160,29 +160,26 @@ Make sure to run `black` before submitting or deploying your code to maintain co
 - **Delete a page**: `DELETE /v1/notion/pages/{page_id}`
   - Response: `{"msg": "Page moved to trash"}`
 
-- **List pages**: `GET /v1/notion/pages?start_cursor=""&page_size=10`
+- **Get pages with pagination**: `GET /v1/notion/pages?skip=0&take=5`
+- **skip**: Determines how many pages to skip, useful for implementing pagination when fetching more results.
+- **take**: Limits the number of pages returned per request. For example, if `take=10`, the response will include 10 pages.
 
-    Retrieves a paginated list of pages from the connected Notion database. You can control the pagination by providing a `start_cursor` and a `page_size`.
+- **Response**:
+Returns a JSON object containing a list of pages, as well as the total number of pages available.
 
-    **Query Parameters**:
-    `start_cursor` (optional): A string used to retrieve the next set of results. Defaults to an empty string if not provided.
-    `page_size` (optional): The number of pages to return. Defaults to 10 if not provided.
-
-    **Response**:
-    Returns a JSON object containing a list of pages with the following structure:
-
-    ```json
+```json
+{
+  "results": [
     {
-      "results": [
-        {
-          "id": "129ec433-71fd-8190-89a4-e3c9d5cf625a",
-          "title": "Example Title",
-          "content": "Page content here"
-        },
-        ...
-      ]
-    }
-    ```
+      "id": "129ec433-71fd-8190-89a4-e3c9d5cf625a",
+      "title": "Example Title",
+      "content": "Page content here"
+    },
+    ...
+  ],
+  "total": 5
+}
+```
 
 ### Security
 
