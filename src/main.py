@@ -1,11 +1,14 @@
 import uvicorn
 from fastapi import FastAPI
+from .app.middleware import LoggingMiddleware
 
 from .app.config import settings
 from .auth.auth import router as auth_router
 from .app.routes import router as api_router
 
 app = FastAPI()
+
+app.add_middleware(LoggingMiddleware)
 
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
 app.include_router(api_router)
