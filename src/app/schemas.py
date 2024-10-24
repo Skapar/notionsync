@@ -7,14 +7,17 @@ class PageCreateDTO(BaseModel):
     title: str
     content: str
 
+
 class PageUpdateDTO(BaseModel):
     title: Optional[str] = None
     content: Optional[str] = ""
+
 
 class PageResponseDTO(BaseModel):
     id: str
     title: str
     content: str
+
 
 class PagesResponseDTO(BaseModel):
     results: List[PageResponseDTO]

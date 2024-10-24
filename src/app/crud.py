@@ -23,19 +23,24 @@ def create_notion_page(page: PageCreateDTO) -> PageResponseDTO:
                     "object": "block",
                     "type": "paragraph",
                     "paragraph": {
-                        "rich_text": [{"type": "text", "text": {"content": page.content}}]
+                        "rich_text": [
+                            {"type": "text", "text": {"content": page.content}}
+                        ]
                     },
                 }
             ],
         }
         response = notion.pages.create(**new_page)
-        return PageResponseDTO(id=response["id"], title=page.title, content=page.content)
+        return PageResponseDTO(
+            id=response["id"], title=page.title, content=page.content
+        )
     except Exception as e:
         error_message = str(e)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=error_message,
         )
+
 
 def get_notion_page_by_id(page_id: str) -> PageResponseDTO:
     try:
@@ -46,7 +51,9 @@ def get_notion_page_by_id(page_id: str) -> PageResponseDTO:
                 detail="Page not found",
             )
         title = response["properties"]["Pages"]["title"][0]["text"]["content"]
-        content = response["children"][0]["paragraph"]["rich_text"][0]["text"]["content"]
+        content = response["children"][0]["paragraph"]["rich_text"][0]["text"][
+            "content"
+        ]
         return PageResponseDTO(id=response["id"], title=title, content=content)
     except Exception as e:
         error_message = str(e)
@@ -55,30 +62,38 @@ def get_notion_page_by_id(page_id: str) -> PageResponseDTO:
             detail=error_message,
         )
 
+
 def update_notion_page(page_id: str, page: PageUpdateDTO) -> PageResponseDTO:
     try:
         updated_page = {
             "properties": {
-                "Pages": {"title": [{"text": {"content": page.title}}]} if page.title else {},
+                "Pages": (
+                    {"title": [{"text": {"content": page.title}}]} if page.title else {}
+                ),
             },
             "children": [
                 {
                     "object": "block",
                     "type": "paragraph",
                     "paragraph": {
-                        "rich_text": [{"type": "text", "text": {"content": page.content}}]
+                        "rich_text": [
+                            {"type": "text", "text": {"content": page.content}}
+                        ]
                     },
                 }
             ],
         }
         response = notion.pages.update(page_id=page_id, **updated_page)
-        return PageResponseDTO(id=response["id"], title=page.title or "", content=page.content)
+        return PageResponseDTO(
+            id=response["id"], title=page.title or "", content=page.content
+        )
     except Exception as e:
         error_message = str(e)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=error_message,
         )
+
 
 def delete_notion_page(page_id: str):
     try:
@@ -91,14 +106,20 @@ def delete_notion_page(page_id: str):
             detail=error_message,
         )
 
+
 def get_notion_pages(start_cursor=None, page_size=10):
     try:
         response = notion.databases.query(
-            database_id=database_id,
-            start_cursor=start_cursor,
-            page_size=page_size
+            database_id=database_id, start_cursor=start_cursor, page_size=page_size
         )
-        pages = [PageResponseDTO(id=page["id"], title=page["properties"]["Pages"]["title"][0]["text"]["content"], content="") for page in response["results"]]
+        pages = [
+            PageResponseDTO(
+                id=page["id"],
+                title=page["properties"]["Pages"]["title"][0]["text"]["content"],
+                content="",
+            )
+            for page in response["results"]
+        ]
         return PagesResponseDTO(results=pages)
     except Exception as e:
         error_message = str(e)
