@@ -102,7 +102,7 @@ NOTION_DATABASE_ID=your-database-id
 1. Start the FastAPI server:
 
 ```bash
-uvicorn app.main:app --reload
+uvicorn src.main:app --reload
 ```
 
 ## Running with Docker
