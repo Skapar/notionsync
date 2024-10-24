@@ -115,11 +115,11 @@ def delete_notion_page(page_id: str):
 def get_notion_pages(skip=0, take=10):
     try:
         response = notion.databases.query(database_id=database_id)
-
+        
         total_pages = response["results"]
-        total_pages_number = len(total_pages)
 
         paginated_pages = total_pages[skip : skip + take]
+        total_pages_number = len(paginated_pages)
 
         pages = [
             PageResponseDTO(
