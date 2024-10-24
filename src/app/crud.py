@@ -107,18 +107,20 @@ def delete_notion_page(page_id: str):
         )
 
 
-def get_notion_pages(start_cursor=None, page_size=10):
+def get_notion_pages(skip=0, take=10):
     try:
-        response = notion.databases.query(
-            database_id=database_id, start_cursor=start_cursor, page_size=page_size
-        )
+        response = notion.databases.query(database_id=database_id)
+
+        total_pages = response["results"]
+        paginated_pages = total_pages[skip : skip + take]
+
         pages = [
             PageResponseDTO(
                 id=page["id"],
                 title=page["properties"]["Pages"]["title"][0]["text"]["content"],
                 content="",
             )
-            for page in response["results"]
+            for page in paginated_pages
         ]
         return PagesResponseDTO(results=pages)
     except Exception as e:
