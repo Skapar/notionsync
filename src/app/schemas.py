@@ -7,6 +7,9 @@ class PageCreate(BaseModel):
     title: str
     content: str
 
+class PageUpdate(BaseModel):
+    title: str
+    content: str
 
 class PageResponse(BaseModel):
     id: str
