@@ -21,3 +21,7 @@ class PageResponseDTO(BaseModel):
 
 class PagesResponseDTO(BaseModel):
     results: List[PageResponseDTO]
+    
+
+class PaginatedPagesResponseDTO(PagesResponseDTO):
+    total: int
