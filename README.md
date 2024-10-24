@@ -71,8 +71,8 @@ The database is managed using SQLite via SQLAlchemy, and the integration with No
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/notion-sync-api.git
-cd notion-sync-api
+git clone https://github.com/Skapar/notionsync.git
+cd notionsync
 ```
 
 1. Create a virtual environment and activate it:
@@ -114,7 +114,7 @@ To run the application with Docker:
 1. Build the Docker image:
 
     ```bash
-    docker build -t notion-sync-api .
+    docker-compose build
     ```
 
 2. Run the Docker container:
@@ -135,12 +135,6 @@ This will start the application in a Docker container and automatically set up t
     black .
     ```
 
-    You can install `black` if you don't have it yet:
-
-    ```bash
-    pip install black
-    ```
-
 Make sure to run `black` before submitting or deploying your code to maintain consistency.
 
 ## API Endpoints
@@ -151,24 +145,24 @@ Make sure to run `black` before submitting or deploying your code to maintain co
   - Request body: `{"username": "your_username", "password": "your_password"}`
   - Response: `{"msg": "User successfully registered"}`
 
-- **Login**: `POST /auth/login`
+- **Login**: `POST /auth/token`
   - Request body: `{"username": "your_username", "password": "your_password"}`
   - Response: JWT tokens: `{"access_token": "your_token", "token_type": "bearer"}`
 
 ### Notion Pages (Requires Authentication)
 
-- **Create a page**: `POST /notion/pages`
+- **Create a page**: `POST /v1/notion/pages`
   - Request body: `{"title": "Page title", "content": "Page content"}`
   - Response: Created Notion page data.
 
-- **Update a page**: `PUT /notion/pages/{page_id}`
+- **Update a page**: `PUT /v1/notion/pages/{page_id}`
   - Request body: `{"title": "Updated title", "content": "Updated content"}`
   - Response: Updated Notion page data.
 
-- **Delete a page**: `DELETE /notion/pages/{page_id}`
+- **Delete a page**: `DELETE /v1/notion/pages/{page_id}`
   - Response: `{"msg": "Page moved to trash"}`
 
-- **List pages**: `GET /notion/pages?start_cursor=""&page_size=10`
+- **List pages**: `GET /v1/notion/pages?start_cursor=""&page_size=10`
 
     Retrieves a paginated list of pages from the connected Notion database. You can control the pagination by providing a `start_cursor` and a `page_size`.
 
