@@ -32,8 +32,6 @@ The database is managed using SQLite via SQLAlchemy, and the integration with No
 
 ```bash
 .
-## Project Structure
-
 ```bash
 .
 ├── src
