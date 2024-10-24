@@ -3,22 +3,18 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 
-class PageCreate(BaseModel):
+class PageCreateDTO(BaseModel):
     title: str
     content: str
 
-class PageUpdate(BaseModel):
-    title: str
-    content: str
+class PageUpdateDTO(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = ""
 
-class PageResponse(BaseModel):
+class PageResponseDTO(BaseModel):
     id: str
     title: str
     content: str
-    notion_id: str
 
-
-class PageListResponse(BaseModel):
-    pages: List[PageResponse]
-    next_cursor: Optional[str]
-    has_more: bool
+class PagesResponseDTO(BaseModel):
+    results: List[PageResponseDTO]
