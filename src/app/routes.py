@@ -38,5 +38,5 @@ def delete_page(page_id: str, current_user: User = Depends(get_current_user)):
 
 
 @router.get("/notion/pages")
-def retrieve_pages(skip: int = 0, take: int = 10):
+def retrieve_pages(skip: int = 0, take: int = 10, User = Depends(get_current_user)):
     return get_notion_pages(skip, take)
